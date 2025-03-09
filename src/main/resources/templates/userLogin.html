@@ -57,7 +57,7 @@
     if (response.ok) {
       alert("Login successful!");
       localStorage.setItem("user", JSON.stringify(result)); // Store user data (e.g., token if using JWT)
-      window.location.href = "/products"; // Redirect to another page (if applicable)
+      window.location.href = result.redirect; // Redirect to another page (if applicable)
     } else {
       document.getElementById("errorMessage").textContent = result;
       document.getElementById("errorMessage").classList.remove("hidden");

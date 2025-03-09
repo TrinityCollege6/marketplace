@@ -77,7 +77,8 @@ public class UserController {
         session.setAttribute("user", user);
 
         if(user.getRole() == User.Role.CUSTOMER) {
-            return ResponseEntity.ok(Map.of("redirect", "/products"));
+            String redirectUrl = "/products";
+            return ResponseEntity.ok(Map.of("redirect", redirectUrl));
         }
 
         return ResponseEntity.ok(userOptional.get());

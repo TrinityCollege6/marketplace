@@ -3,7 +3,7 @@ package com.leo.marketplace.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Cart {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

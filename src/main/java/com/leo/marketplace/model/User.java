@@ -23,7 +23,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Cart> cartItems;
+    private List<CartItem> cartItemItems;
 
 
 
@@ -90,11 +90,11 @@ public class User implements Serializable {
         this.orders = orders;
     }
 
-    public List<Cart> getCartItems() {
-        return cartItems;
+    public List<CartItem> getCartItems() {
+        return cartItemItems;
     }
 
-    public void setCartItems(List<Cart> cartItems) {
-        this.cartItems = cartItems;
+    public void setCartItems(List<CartItem> cartItemItems) {
+        this.cartItemItems = cartItemItems;
     }
 }

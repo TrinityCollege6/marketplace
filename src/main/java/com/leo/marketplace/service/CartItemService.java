@@ -1,6 +1,6 @@
 package com.leo.marketplace.service;
 
 
-public interface CartService {
+public interface CartItemService {
     void addProduct(Long Id, int quantity);
 }

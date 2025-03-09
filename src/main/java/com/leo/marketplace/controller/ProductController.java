@@ -1,9 +1,12 @@
 package com.leo.marketplace.controller;
 
 import com.leo.marketplace.model.Product;
+import com.leo.marketplace.model.User;
 import com.leo.marketplace.model.request.ProductCreateRequest;
 import com.leo.marketplace.model.request.ProductGetRequest;
+import com.leo.marketplace.repository.ProductRepository;
 import com.leo.marketplace.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -21,6 +24,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> productCreate(@RequestBody ProductCreateRequest request) {
@@ -34,13 +39,25 @@ public class ProductController {
     }
 
     @GetMapping
-    public String showProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
+    public String productPage(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("userId", user.getId());
         return "productPage";
     }
 
-    @GetMapping("/{id}")
+
+//    @GetMapping
+//    public String showProducts(Model model) {
+//        List<Product> products = productService.getAllProducts();
+//        model.addAttribute("products", products);
+//        return "productPage";
+//    }
+
+    @GetMapping("/details/{id}")
     public String getProductDetails(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
