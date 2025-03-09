@@ -10,18 +10,14 @@
       padding: 0;
       background-color: #f4f4f4;
     }
-
-    /* ✅ Keep container width fixed and ensure wrapping works correctly */
     .container {
       max-width: 1200px;
       margin: 20px auto;
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
-      justify-content: center; /* Center content properly */
+      justify-content: center;
     }
-
-    /* ✅ Consistent size and box shadow */
     .product {
       background: white;
       padding: 15px;
@@ -31,46 +27,25 @@
       text-align: center;
       transition: transform 0.2s ease-in-out;
     }
-
     .product img {
       width: 100%;
       height: 200px;
       object-fit: cover;
       border-radius: 5px;
     }
-
-    /* ✅ Improve hover animation */
     .product:hover {
       transform: translateY(-5px);
     }
-
     h3 {
       font-size: 18px;
       margin: 10px 0;
       color: #333;
     }
-
     p {
       font-size: 16px;
       color: #555;
       margin: 5px 0;
     }
-
-    label {
-      font-size: 14px;
-      color: #555;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input[type="number"] {
-      width: 80%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      text-align: center;
-    }
-
     button {
       background-color: #28a745;
       color: white;
@@ -82,11 +57,9 @@
       margin-top: 10px;
       transition: background 0.2s;
     }
-
     button:hover {
       background-color: #218838;
     }
-
     .btn {
       display: inline-block;
       margin-top: 10px;
@@ -97,12 +70,9 @@
       text-decoration: none;
       transition: background 0.2s;
     }
-
     .btn:hover {
       background-color: #0056b3;
     }
-
-    /* ✅ Fix cartItem button position */
     .cartItem-link {
       position: fixed;
       top: 20px;
@@ -116,7 +86,6 @@
       z-index: 999;
       transition: background 0.2s;
     }
-
     .cartItem-link:hover {
       background-color: #218838;
     }
@@ -126,7 +95,7 @@
 
 <a th:href="@{'/cartItem/' + ${userId}}" class="cartItem-link">Cart</a>
 
-<h2 style="text-align:center; margin-bottom: 20px;">Product Catalogue</h2>
+<h2 style="text-align:center;">Product Catalogue</h2>
 
 <div class="container">
   <div th:each="product : ${products}" class="product">
@@ -134,10 +103,10 @@
     <h3 th:text="${product.name}"></h3>
     <p>€<span th:text="${product.price}"></span></p>
 
-    <form th:action="@{'/cartItem/add/' + ${product.id} + '/' + ${userId}}" method="post">
+    <form th:action="@{'/cartItem/add/' + ${product.id}}" method="post">
       <input type="hidden" name="productId" th:value="${product.id}" />
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" name="quantity" value="1" min="1">
+      <label>Quantity:</label>
+      <input type="number" name="quantity" value="1" min="1" />
       <button type="submit">Add to Cart</button>
     </form>
 

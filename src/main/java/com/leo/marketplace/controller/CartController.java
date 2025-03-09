@@ -8,6 +8,7 @@ import com.leo.marketplace.repository.CartItemRepository;
 import com.leo.marketplace.repository.ProductRepository;
 import com.leo.marketplace.repository.UserRepository;
 import com.leo.marketplace.service.CartItemService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("/cartItem")
 public class CartController {
 
     @Autowired
@@ -35,26 +36,44 @@ public class CartController {
 //    }
 
 
-    @PostMapping("/add/{productId}/{userId}")
-    public String addToCart(@PathVariable Long productId, @PathVariable Long userId, @RequestParam int quantity) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Product product = productRepository.findById(productId).orElseThrow();
+    @PostMapping("/add/{productId}")
+    public String addToCart(@PathVariable Long productId, @RequestParam int quantity, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if(user == null){
+            return "redirect:/login";
+        }
 
-        CartItem cartItem = new CartItem();
-        cartItem.setUser(user);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
+        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Product does not exist"));
 
-        cartItemRepository.save(cartItem);
+        cartItemService.addToCart(user, product, quantity);
 
-        return "redirect:/products/user/" + userId; // ✅ Redirect back to user product page
+        return "redirect:/cartItem";
     }
 
-    @GetMapping("/{userId}")
-    public String viewCart(@PathVariable Long userId, Model model) {
-        List<CartItem> cartItemItems = cartItemRepository.findByUserId(userId);
+    @GetMapping
+    public String viewCart(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<CartItem> cartItemItems = cartItemService.getCartItem(user);
         model.addAttribute("cartItems", cartItemItems);
+        model.addAttribute("userId", user.getId());
+
         return "cart";
+    }
+
+    @PostMapping("/remove/{cartItemId}")
+    public String removeFromCart(@PathVariable Long cartItemId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        cartItemService.removeCartItem(cartItemId);
+
+        return "redirect:/cartItem";
     }
 
 }

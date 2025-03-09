@@ -7,9 +7,9 @@ import com.leo.marketplace.model.request.ProductGetRequest;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(ProductCreateRequest request);
-    List<Product> getAllProducts();
-    Product getProductById(Long id);
+    public Product createProduct(ProductCreateRequest request);
+    public List<Product> getAllProducts();
+    public Product getProductById(Long id);
 
 
 }

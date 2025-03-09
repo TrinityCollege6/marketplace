@@ -44,7 +44,8 @@ public class ProductController {
         if (user == null) {
             return "redirect:/login";
         }
-        model.addAttribute("products", productService.getAllProducts());
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
         model.addAttribute("userId", user.getId());
         return "productPage";
     }
@@ -58,9 +59,14 @@ public class ProductController {
 //    }
 
     @GetMapping("/details/{id}")
-    public String getProductDetails(@PathVariable Long id, Model model) {
+    public String getProductDetails(@PathVariable Long id, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/user/login"; // Redirect to login if user is not logged in
+        }
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
+        model.addAttribute("userId", user.getId());
         return "productDetails";
     }
 
