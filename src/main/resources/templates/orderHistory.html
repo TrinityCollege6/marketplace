@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .order {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fafafa;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+    }
+
+    td {
+      color: #555;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .status {
+      font-size: 16px;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .total-section {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .continue-shopping, .order-history {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .continue-shopping {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .continue-shopping:hover {
+      background-color: #0056b3;
+    }
+
+    .order-history {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .order-history:hover {
+      background-color: #218838;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Your Order History</h2>
+
+  <div th:if="${orders.isEmpty()}">
+    <p>You have no past orders.</p>
+  </div>
+
+  <div th:each="order : ${orders}" class="order">
+    <h3>Order ID: <span th:text="${order.id}"></span></h3>
+    <p>Status: <span th:text="${order.status}" class="status"></span></p>
+    <p>Total: €<span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></span></p>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price (at purchase)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${order.orderedItems}">
+        <td th:text="${item.product.name}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="'€' + ${#numbers.formatDecimal(item.purchasePrice, 1, 2)}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="button-group">
+    <a href="/products" class="continue-shopping">Continue Shopping</a>
+  </div>
+</div>
+
+</body>
+</html>

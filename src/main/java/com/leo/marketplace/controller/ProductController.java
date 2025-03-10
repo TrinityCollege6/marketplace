@@ -42,21 +42,13 @@ public class ProductController {
     public String productPage(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
         model.addAttribute("userId", user.getId());
         return "productPage";
     }
-
-
-//    @GetMapping
-//    public String showProducts(Model model) {
-//        List<Product> products = productService.getAllProducts();
-//        model.addAttribute("products", products);
-//        return "productPage";
-//    }
 
     @GetMapping("/details/{id}")
     public String getProductDetails(@PathVariable Long id, HttpSession session, Model model) {

@@ -19,7 +19,8 @@ public class Product {
     @Column(nullable = false)
     private String description;
 
-    private String imageUrl;  // Image storage
+    private String imageUrl;
+    private int quantity;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isHidden;
@@ -70,5 +71,13 @@ public class Product {
 
     public void setHidden(boolean hidden) {
         isHidden = hidden;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

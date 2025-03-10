@@ -11,19 +11,19 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex) {
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException e) {
         return ResponseEntity.badRequest().body(Map.of(
-                "error", ex.getMessage(),
-                "code", ex.getCode(),
-                "description", ex.getDescription()  // Include the description field
+                "error", e.getMessage(),
+                "code", e.getCode(),
+                "description", e.getDescription()  // Include the description field
         ));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleException(Exception ex) {
+    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
         return ResponseEntity.internalServerError().body(Map.of(
                 "error", "Internal server error",
-                "message", ex.getMessage(),
+                "message", e.getMessage(),
                 "code", ErrorCode.SYSTEM_ERROR.getCode()
         ));
     }

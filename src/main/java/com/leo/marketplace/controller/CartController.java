@@ -37,15 +37,20 @@ public class CartController {
 
 
     @PostMapping("/add/{productId}")
-    public String addToCart(@PathVariable Long productId, @RequestParam int quantity, HttpSession session) {
+    public String addToCart(@PathVariable Long productId, @RequestParam int quantity, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if(user == null){
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
 
         Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Product does not exist"));
 
-        cartItemService.addToCart(user, product, quantity);
+        try {
+            cartItemService.addToCart(user, product, quantity);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return viewCart(session, model);
+        }
 
         return "redirect:/cartItem";
     }
@@ -54,7 +59,7 @@ public class CartController {
     public String viewCart(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
 
         List<CartItem> cartItemItems = cartItemService.getCartItem(user);
@@ -68,7 +73,7 @@ public class CartController {
     public String removeFromCart(@PathVariable Long cartItemId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
 
         cartItemService.removeCartItem(cartItemId);

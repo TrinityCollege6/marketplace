@@ -73,27 +73,31 @@
     .btn:hover {
       background-color: #0056b3;
     }
-    .cartItem-link {
-      position: fixed;
-      top: 20px;
-      right: 20px;
+    .link-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+    .cart-link, .order-history-link {
       background-color: #28a745;
       color: white;
       padding: 10px 20px;
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
-      z-index: 999;
       transition: background 0.2s;
     }
-    .cartItem-link:hover {
+    .cart-link:hover, .order-history-link:hover {
       background-color: #218838;
     }
   </style>
 </head>
 <body>
 
-<a th:href="@{'/cartItem/' + ${userId}}" class="cartItem-link">Cart</a>
+<div class="link-container">
+  <a th:href="@{'/cartItem'}" class="cart-link">Cart</a>
+  <a th:href="@{'/order/history'}" class="order-history-link">Order History</a>
+</div>
 
 <h2 style="text-align:center;">Product Catalogue</h2>
 

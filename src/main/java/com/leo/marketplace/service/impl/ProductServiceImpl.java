@@ -23,7 +23,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductCreateRequest request) {
-        // Validate request parameters
         if (request == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "Request body cannot be null");
         }
@@ -37,7 +36,6 @@ public class ProductServiceImpl implements ProductService {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "Product name already exists");
         }
 
-        // Create product entity
         Product product = new Product();
         product.setName(request.getName());
         product.setPrice(request.getPrice());
