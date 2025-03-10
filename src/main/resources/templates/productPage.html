@@ -10,6 +10,7 @@
       padding: 0;
       background-color: #f4f4f4;
     }
+
     .container {
       max-width: 1200px;
       margin: 20px auto;
@@ -18,6 +19,7 @@
       gap: 20px;
       justify-content: center;
     }
+
     .product {
       background: white;
       padding: 15px;
@@ -27,25 +29,30 @@
       text-align: center;
       transition: transform 0.2s ease-in-out;
     }
+
     .product img {
       width: 100%;
       height: 200px;
       object-fit: cover;
       border-radius: 5px;
     }
+
     .product:hover {
       transform: translateY(-5px);
     }
+
     h3 {
       font-size: 18px;
       margin: 10px 0;
       color: #333;
     }
+
     p {
       font-size: 16px;
       color: #555;
       margin: 5px 0;
     }
+
     button {
       background-color: #28a745;
       color: white;
@@ -57,9 +64,11 @@
       margin-top: 10px;
       transition: background 0.2s;
     }
+
     button:hover {
       background-color: #218838;
     }
+
     .btn {
       display: inline-block;
       margin-top: 10px;
@@ -70,15 +79,25 @@
       text-decoration: none;
       transition: background 0.2s;
     }
+
     .btn:hover {
       background-color: #0056b3;
     }
+
+    /* ✅ Flex container for header buttons */
     .link-container {
       display: flex;
       justify-content: space-between;
       padding: 10px 20px;
+      align-items: center;
     }
-    .cart-link, .order-history-link {
+
+    .right-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    .cart-link, .order-history-link, .logout-link {
       background-color: #28a745;
       color: white;
       padding: 10px 20px;
@@ -87,16 +106,30 @@
       font-weight: bold;
       transition: background 0.2s;
     }
-    .cart-link:hover, .order-history-link:hover {
+
+    .cart-link:hover, .order-history-link:hover, .logout-link:hover {
       background-color: #218838;
+    }
+
+    /* ✅ Style the logout button differently */
+    .logout-link {
+      background-color: #dc3545;
+    }
+
+    .logout-link:hover {
+      background-color: #c82333;
     }
   </style>
 </head>
 <body>
 
+<!-- ✅ Header with cart, order history, and logout -->
 <div class="link-container">
   <a th:href="@{'/cartItem'}" class="cart-link">Cart</a>
-  <a th:href="@{'/order/history'}" class="order-history-link">Order History</a>
+  <div class="right-links">
+    <a th:href="@{'/order/history'}" class="order-history-link">Order History</a>
+    <a th:href="@{'/user/logout'}" class="logout-link">Logout</a>
+  </div>
 </div>
 
 <h2 style="text-align:center;">Product Catalogue</h2>

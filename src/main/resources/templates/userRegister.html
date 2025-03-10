@@ -96,6 +96,7 @@
 
       if (response.ok) {
         alert(`User registered successfully with ID: ${result.id}`);
+        window.location.href = "/user/login";
       } else {
         alert(`Registration failed: ${result.error || "Unknown error"}`);
       }
@@ -105,6 +106,7 @@
     }
   });
 </script>
+
 
 </body>
 </html>

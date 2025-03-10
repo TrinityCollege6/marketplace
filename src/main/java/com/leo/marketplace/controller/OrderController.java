@@ -35,7 +35,7 @@ public class OrderController {
             return "redirect:/cartItem";
         }
 
-        return "redirect:/order";
+        return "redirect:/order/history";
     }
 
     @GetMapping("/history")

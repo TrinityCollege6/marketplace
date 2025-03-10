@@ -97,6 +97,41 @@ tr:hover {
     background-color: #f9f9f9;
 }
 
+.logout-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+.edit-btn, .delete-btn, .update-btn {
+    padding: 6px 12px;
+    margin-right: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.update-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+
 .empty-cart-message {
     text-align: center;
     font-size: 18px;

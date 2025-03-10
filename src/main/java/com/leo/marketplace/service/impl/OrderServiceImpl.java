@@ -40,14 +40,16 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalPrice = BigDecimal.ZERO;
         List<OrderedItem> orderedItems = new ArrayList<>();
 
-        for(CartItem cartItem : cartItems) {
+        for (CartItem cartItem : cartItems) {
             OrderedItem orderedItem = new OrderedItem();
             orderedItem.setOrder(order);
             orderedItem.setProduct(cartItem.getProduct());
             orderedItem.setQuantity(cartItem.getQuantity());
             orderedItem.setPurchasePrice(cartItem.getProduct().getPrice());
 
-            totalPrice = totalPrice.add(cartItem.getProduct().getPrice()).multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+            BigDecimal itemTotal = cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+
+            totalPrice = totalPrice.add(itemTotal);
 
             orderedItems.add(orderedItem);
         }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Admin Dashboard</h2>
+
+  <!-- Logout Button -->
+  <div style="text-align: right; margin-bottom: 20px;">
+    <a href="/user/logout" class="logout-btn">Logout</a>
+  </div>
+
+  <!-- Products Section -->
+  <h3>Products</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Price (€)</th>
+      <th>Stock</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td th:text="${product.id}"></td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.price}"></td>
+      <td th:text="${product.quantity}"></td>
+      <td>
+        <a th:href="@{'/admin/product/edit/' + ${product.id}}" class="edit-btn">Edit</a>
+        <form th:action="@{'/admin/product/delete/' + ${product.id}}" method="post" style="display:inline;">
+          <button type="submit" class="delete-btn">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Orders Section -->
+  <h3>Orders</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Total Price (€)</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}"></td>
+      <td th:text="${order.user.fullname}"></td>
+      <td th:text="${order.totalPrice}"></td>
+      <td th:text="${order.status}"></td>
+      <td>
+        <form th:action="@{'/admin/order/update/' + ${order.id}}" method="post">
+          <select name="status">
+            <option value="PENDING">Pending</option>
+            <option value="SHIPPED">Shipped</option>
+            <option value="DELIVERED">Delivered</option>
+            <option value="CANCELED">Canceled</option>
+          </select>
+          <button type="submit" class="update-btn">Update</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

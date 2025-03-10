@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,13 @@
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
 
 <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+
   <h2 class="text-2xl font-semibold text-center mb-6">Login</h2>
 
+  <div id="errorMessage" class="text-sm text-red-500 text-center mb-4 hidden"></div>
+
   <form id="loginForm" class="space-y-4">
+
     <div>
       <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
       <input type="text" id="username" name="username" required
@@ -31,10 +35,9 @@
   </form>
 
   <p class="text-sm text-center text-gray-600 mt-4">
-    Don't have an account? <a href="#" class="text-blue-500">Sign up</a>
+    Don't have an account?
+    <a th:href="@{/user/register}" class="text-blue-500 hover:text-blue-700">Sign up</a>
   </p>
-
-  <p id="errorMessage" class="text-sm text-red-500 text-center mt-2 hidden"></p>
 </div>
 
 <script>
@@ -44,22 +47,28 @@
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch("http://localhost:8080/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ username, password })
-    });
+    try {
+      const response = await fetch("/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (response.ok) {
-      alert("Login successful!");
-      localStorage.setItem("user", JSON.stringify(result)); // Store user data (e.g., token if using JWT)
-      window.location.href = result.redirect; // Redirect to another page (if applicable)
-    } else {
-      document.getElementById("errorMessage").textContent = result;
+      if (response.ok) {
+        // alert(result.message);
+        localStorage.setItem("user", JSON.stringify(result));
+        window.location.href = result.redirect;
+      } else {
+        document.getElementById("errorMessage").textContent = result.message;
+        document.getElementById("errorMessage").classList.remove("hidden");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      document.getElementById("errorMessage").textContent = "An error occurred. Please try again.";
       document.getElementById("errorMessage").classList.remove("hidden");
     }
   });

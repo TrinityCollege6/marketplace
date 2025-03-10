@@ -2,8 +2,12 @@ package com.leo.marketplace.controller;
 
 import com.leo.marketplace.common.ErrorCode;
 import com.leo.marketplace.exception.BusinessException;
+import com.leo.marketplace.model.Order;
+import com.leo.marketplace.model.Product;
 import com.leo.marketplace.model.User;
 import com.leo.marketplace.model.request.UserRegisterRequest;
+import com.leo.marketplace.repository.OrderRepository;
+import com.leo.marketplace.repository.ProductRepository;
 import com.leo.marketplace.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
@@ -11,11 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.leo.marketplace.service.UserService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,9 +33,13 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+
 
     @GetMapping("/register")
     public String registerPage(){
@@ -65,28 +75,55 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody User loginRequest, HttpSession session) {
         if (loginRequest == null || StringUtils.isAnyBlank(loginRequest.getUsername(), loginRequest.getPassword())) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Username and password are required");
+            return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
         }
 
         Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
 
         if (userOptional.isEmpty() || !userOptional.get().getPassword().equals(loginRequest.getPassword())) {
-            throw new BusinessException(ErrorCode.NOT_LOGIN, "Invalid username or password");
+            return ResponseEntity.status(401).body(Map.of("message", "Invalid username or password"));
         }
+
         User user = userOptional.get();
         session.setAttribute("user", user);
 
-        if(user.getRole() == User.Role.CUSTOMER) {
-            String redirectUrl = "/products";
-            return ResponseEntity.ok(Map.of("redirect", redirectUrl));
+        String redirectUrl;
+        if (user.getRole() == User.Role.CUSTOMER) {
+            redirectUrl = "/products";
+        } else if (user.getRole() == User.Role.ADMIN) {
+            redirectUrl = "/user/admin/dashboard";
+        } else {
+            redirectUrl = "/user/login";
         }
 
-        return ResponseEntity.ok(userOptional.get());
+        // ✅ Send JSON response to frontend
+        return ResponseEntity.ok(Map.of(
+                "message", "Login successful",
+                "redirect", redirectUrl
+        ));
     }
 
+
     @GetMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(HttpSession session) {
+    public String logout(HttpSession session) {
         session.invalidate();
-        return ResponseEntity.ok(Map.of("message", "Logged out"));
+        return "redirect:/user/login";
+    }
+
+    @GetMapping("admin/dashboard")
+    public String adminDashboard(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null || user.getRole() != User.Role.ADMIN) {
+            return "redirect:/user/login";
+        }
+
+        List<Product> products = productRepository.findAll();
+        List<Order> orders = orderRepository.findAll();
+
+        model.addAttribute("products", products);
+        model.addAttribute("orders", orders);
+
+        return "adminDashboard";
     }
 }
