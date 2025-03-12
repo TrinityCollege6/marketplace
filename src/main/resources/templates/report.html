@@ -21,7 +21,14 @@
       border: 1px solid black;
     }
 
-    h1, h2 {
+    h1 {
+      color: blue;
+      border-bottom: 2px solid blue;
+      padding-bottom: 8px;
+      font-size: 40px;
+    }
+
+    h2 {
       color: blue;
       border-bottom: 2px solid blue;
       padding-bottom: 8px;
@@ -61,35 +68,48 @@
 <div class="container">
   <h1>Project Report</h1>
 
-  <h2>1. Project Overview</h2>
-  <p>
-    This project involved building an admin dashboard with product and order management functionality.
-    The admin is able to add, modify, hide, and unhide products, and also manage orders.
-  </p>
-
-  <h2>2. Requirements Met</h2>
-  <ul>
-    <li>Admin can add new products</li>
-    <li>Admin can modify product details (price, stock, description, image)</li>
-    <li>Admin can hide and unhide products</li>
-    <li>Admin can update order statuses</li>
-    <li>User authentication (Login & Registration)</li>
-  </ul>
-
-  <h2>3. Screenshots</h2>
   <div class="screenshot">
-    <p>Admin Dashboard Screenshot:</p>
-    <img src="dashboard-screenshot.png" alt="Admin Dashboard">
+    <h2>Login Page</h2>
+    <p>Sign up will take user to the "Registration Page". Logging in as an ADMIN will take user to the "Admin Dashboard" and logging in as an CUSTOMER will take user to the "Product Catalogue".</p>
+    <img src="/screenshots/UserLoginAdmin.png" alt="User Login">
   </div>
 
   <div class="screenshot">
-    <p>Product Management Screenshot:</p>
-    <img src="product-management-screenshot.png" alt="Product Management">
+    <h2>Registration Page</h2>
+    <p>User will be redirected back to the "Login Page" once they register.</p>
+    <img src="/screenshots/UserRegistration.png" alt="User Registration">
   </div>
 
   <div class="screenshot">
-    <p>Order Management Screenshot:</p>
-    <img src="order-management-screenshot.png" alt="Order Management">
+    <h2>Admin Dashboard</h2>
+    <p>Admin Dashboard is where the Admin manipulates Products, updates Orders or creating new Products.</p>
+    <img src="/screenshots/AdminDashboardProducts.png" alt="Admin Dashboard Products">
+    <img src="/screenshots/AdminDashboardOrders.png" alt="Admin Dashboard Orders">
+  </div>
+
+  <div class="screenshot">
+    <h2>Product Catalogue</h2>
+    <p>Customers can browse all available products here. They can click into their "Cart" or "Order History", they can add items in certain quantity to their carts or view the "Product Detail Page" for more details.</p>
+    <img src="/screenshots/ProductCatalogue.png" alt="Product Catalogue">
+  </div>
+
+  <div class="screenshot">
+    <h2>Product Detail Page</h2>
+    <p>This page displays more details about the product. Customers can add this product to the cart in certain quantity, click into their "Cart" or go back to "Product Catalogue". </p>
+    <img src="/screenshots/ProductDetailPage.png" alt="Product Detail">
+  </div>
+
+  <div class="screenshot">
+    <h2>Cart</h2>
+    <p>Customers can view the content of their carts here. The total for each product and for the whole cart is displayed. Users can remove products in their carts or update the quantity for each product.
+      Customers can view their "Order History" or continue shopping in the "Product Catalogue". Customers can also place order which will direct them to their "Order History" afterwards.</p>
+    <img src="/screenshots/Cart.png" alt="Cart">
+  </div>
+
+  <div class="screenshot">
+    <h2>Order History</h2>
+    <p>Customers can view their order history here. They can view the products that they ordered and the status of the order. They can also click Continue Shopping to go back to "Product Dialogue"</p>
+    <img src="/screenshots/OrderHistory.png" alt="Order History">
   </div>
 </div>
 

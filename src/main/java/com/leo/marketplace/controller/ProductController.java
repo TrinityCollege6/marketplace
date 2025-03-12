@@ -47,9 +47,7 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updateProduct(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -66,17 +64,14 @@ public class ProductController {
         if (updates.containsKey("imageUrl")) {
             product.setImageUrl((String) updates.get("imageUrl"));
         }
-
         productRepository.save(product);
         return ResponseEntity.ok().body("Product updated successfully");
     }
 
-
     @PostMapping("/hide/{id}")
     @ResponseBody
     public ResponseEntity<?> hideProduct(@PathVariable Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         product.setHidden(true);
         productRepository.save(product);

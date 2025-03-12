@@ -43,7 +43,6 @@ public class UserController {
     private static final String SALT = "leo";
 
 
-
     @GetMapping("/register")
     public String registerPage(){
         return "userRegister";
@@ -77,38 +76,27 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> userLogin(@RequestBody User loginRequest, HttpSession session) {
-        if (loginRequest == null || StringUtils.isAnyBlank(loginRequest.getUsername(), loginRequest.getPassword())) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Username and password are required"));
+        try {
+            User user = userService.userLogin(loginRequest.getUsername(), loginRequest.getPassword());
+
+            session.setAttribute("user", user);
+
+            String redirectUrl;
+            if (user.getRole() == User.Role.CUSTOMER) {
+                redirectUrl = "/products";
+            } else if (user.getRole() == User.Role.ADMIN) {
+                redirectUrl = "/user/admin/dashboard";
+            } else {
+                redirectUrl = "/user/login";
+            }
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "redirect", redirectUrl
+            ));
+        } catch (BusinessException e) {
+            return ResponseEntity.status(401).body(Map.of("message", e.getMessage()));
         }
-
-        Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
-
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(401).body(Map.of("message", "Invalid username or password"));
-        }
-
-        User user = userOptional.get();
-
-        String encryptedPassword = DigestUtils.md5DigestAsHex((SALT + loginRequest.getPassword()).getBytes());
-
-        if (!encryptedPassword.equals(user.getPassword())) {
-            return ResponseEntity.status(401).body(Map.of("message", "Invalid username or password"));
-        }
-        session.setAttribute("user", user);
-
-        String redirectUrl;
-        if (user.getRole() == User.Role.CUSTOMER) {
-            redirectUrl = "/products";
-        } else if (user.getRole() == User.Role.ADMIN) {
-            redirectUrl = "/user/admin/dashboard";
-        } else {
-            redirectUrl = "/user/login";
-        }
-
-        return ResponseEntity.ok(Map.of(
-                "message", "Login successful",
-                "redirect", redirectUrl
-        ));
     }
 
 

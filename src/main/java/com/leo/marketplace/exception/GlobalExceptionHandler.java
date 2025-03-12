@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(Map.of(
                 "error", e.getMessage(),
                 "code", e.getCode(),
-                "description", e.getDescription()  // Include the description field
+                "description", e.getDescription()
         ));
     }
 

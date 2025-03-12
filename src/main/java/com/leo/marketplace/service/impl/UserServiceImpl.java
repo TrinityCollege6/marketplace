@@ -68,6 +68,27 @@ public class UserServiceImpl implements UserService {
         return newUser.getId();
     }
 
+    @Override
+    public User userLogin(String username, String password) {
+        if (StringUtils.isAnyBlank(username, password)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Username and password are required");
+        }
+
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Invalid username or password");
+        }
+
+        User user = userOptional.get();
+
+        String encryptedPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
+        if (!encryptedPassword.equals(user.getPassword())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Invalid username or password");
+        }
+
+        return user;
+    }
+
     public boolean checkIllegalityStr(String str) {
         String regex = "^[a-zA-Z0-9 .,!?'\"@#$%^&*()_\\-+=~`<>:;/\\\\|]*$";
         Pattern pattern = Pattern.compile(regex);
