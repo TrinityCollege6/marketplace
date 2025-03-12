@@ -7,78 +7,12 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
       padding: 20px;
       margin: 0;
     }
 
-    .container {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     h1, h2 {
-      color: #333;
-    }
-
-    .btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      font-size: 14px;
-    }
-    .btn-add {
-      background-color: #28a745;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .btn-add:hover {
-      background-color: #218838;
-    }
-
-    .btn-edit {
-      background-color: #007bff;
-    }
-
-    .btn-edit:hover {
-      background-color: #0056b3;
-    }
-
-    .btn-hide {
-      background-color: #dc3545;
-    }
-
-    .btn-hide:hover {
-      background-color: #c82333;
-    }
-
-    .btn-unhide {
-      background-color: #ffc107;
-      color: #000;
-    }
-
-    .btn-unhide:hover {
-      background-color: #e0a800;
-    }
-
-    .btn-update {
-      background-color: #28a745;
-    }
-
-    .btn-update:hover {
-      background-color: #218838;
+      color: black;
     }
 
     table {
@@ -88,14 +22,56 @@
     }
 
     th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
+      padding: 10px;
+      border: 1px solid lightgray;
       text-align: center;
     }
 
     th {
-      background-color: #28a745;
+      background-color: blue;
       color: white;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    .btn-edit {
+      background-color: blue;
+    }
+
+    .btn-edit:hover {
+      background-color: darkblue;
+    }
+
+    .btn-hide {
+      background-color: red;
+    }
+
+    .btn-hide:hover {
+      background-color: darkred;
+    }
+
+    .btn-unhide {
+      background-color: yellow;
+      color: black;
+    }
+
+    .btn-unhide:hover {
+      background-color: gold;
+    }
+
+    .btn-add {
+      background-color: green;
+    }
+
+    .btn-add:hover {
+      background-color: darkgreen;
     }
 
     .hidden {
@@ -107,84 +83,77 @@
     }
 
     .logout-btn {
-      background-color: #dc3545;
+      background-color: red;
       color: white;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 6px 12px;
       text-decoration: none;
-      display: inline-block;
-      margin-left: auto;
-      transition: background-color 0.2s;
+      border-radius: 3px;
+      float: right;
     }
 
     .logout-btn:hover {
-      background-color: #c82333;
+      background-color: darkred;
     }
 
-    .flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    select {
+      padding: 5px;
+      border: 1px black;
+      border-radius: 3px;
+    }
+
+    button:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="flex">
-    <h1>Admin Dashboard</h1>
-    <a href="/user/logout" class="logout-btn">Logout</a>
-  </div>
+<h1>Admin Dashboard</h1>
+<a href="/user/logout" class="logout-btn">Logout</a>
 
-  <h2>Add New Product</h2>
-  <form id="createProductForm">
-    <input type="text" id="newName" placeholder="Product Name" required>
-    <input type="number" step="0.01" id="newPrice" placeholder="Price (€)" required>
-    <input type="text" id="newDescription" placeholder="Description" required>
-    <input type="text" id="newImageUrl" placeholder="Image URL">
-    <input type="number" id="newQuantity" placeholder="Quantity" required>
-    <button type="submit" class="btn btn-update">Add Product</button>
-  </form>
+<h2>Add New Product</h2>
+<form id="createProductForm">
+  <input type="text" id="newName" placeholder="Product Name" required>
+  <input type="number" step="0.01" id="newPrice" placeholder="Price (€)" required>
+  <input type="text" id="newDescription" placeholder="Description" required>
+  <input type="text" id="newImageUrl" placeholder="Image URL">
+  <input type="number" id="newQuantity" placeholder="Quantity" required>
+  <button type="submit" class="btn btn-add">Add Product</button>
+</form>
 
-  <h2>Products</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Price (€)</th>
-      <th>Stock</th>
-      <th>Description</th>
-      <th>Image</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="productTable">
-    </tbody>
-  </table>
+<h2>Products</h2>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Price (€)</th>
+    <th>Stock</th>
+    <th>Description</th>
+    <th>Image</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody id="productTable"></tbody>
+</table>
 
-  <!-- Orders -->
-  <h2>Orders</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>User</th>
-      <th>Total Price (€)</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="orderTable">
-    <!-- Orders will be dynamically inserted here -->
-    </tbody>
-  </table>
-</div>
+<h2>Orders</h2>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>User</th>
+    <th>Total Price (€)</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody id="orderTable"></tbody>
+</table>
 
 <script>
-  // ✅ Load Products
   async function loadProducts() {
     const response = await fetch('/products/all');
     const products = await response.json();
@@ -204,9 +173,9 @@
           <td>${product.hidden ? '<span class="hidden">Hidden</span>' : '<span class="visible">Visible</span>'}</td>
           <td>
             <button onclick="updateProduct(${product.id})" class="btn btn-edit">Edit</button>
-            ${product.hidden
-              ? `<button onclick="unhideProduct(${product.id})" class="btn btn-unhide">Unhide</button>`
-              : `<button onclick="hideProduct(${product.id})" class="btn btn-hide">Hide</button>`}
+            ${product.hidden ?
+              `<button onclick="unhideProduct(${product.id})" class="btn btn-unhide">Unhide</button>` :
+              `<button onclick="hideProduct(${product.id})" class="btn btn-hide">Hide</button>`}
           </td>
         </tr>
       `;
@@ -214,7 +183,6 @@
     });
   }
 
-  // ✅ Update Product
   async function updateProduct(productId) {
     const price = parseFloat(document.getElementById(`price-${productId}`).value);
     const stock = parseInt(document.getElementById(`stock-${productId}`).value);
@@ -224,24 +192,17 @@
     const response = await fetch(`/products/update/${productId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        price,
-        quantity: stock,
-        description,
-        imageUrl
-      })
+      body: JSON.stringify({ price, quantity: stock, description, imageUrl })
     });
 
     if (response.ok) {
       alert('Product updated successfully');
-      loadProducts(); // ✅ Reload products after update
+      loadProducts();
     } else {
-      const errorMessage = await response.text();
-      alert(`Failed to update product: ${errorMessage}`);
+      alert('Failed to update product');
     }
   }
 
-  // ✅ Create Product
   document.getElementById('createProductForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -266,39 +227,28 @@
     }
   });
 
-  // ✅ Hide Product
   async function hideProduct(productId) {
     if (!confirm('Are you sure you want to hide this product?')) return;
 
-    const response = await fetch(`/products/hide/${productId}`, {
-      method: 'POST'
-    });
+    const response = await fetch(`/products/hide/${productId}`, { method: 'POST' });
 
     if (response.ok) {
       alert('Product hidden');
       loadProducts();
-    } else {
-      alert('Failed to hide product');
     }
   }
 
-  // ✅ Unhide Product
   async function unhideProduct(productId) {
     if (!confirm('Are you sure you want to unhide this product?')) return;
 
-    const response = await fetch(`/products/unhide/${productId}`, {
-      method: 'POST'
-    });
+    const response = await fetch(`/products/unhide/${productId}`, { method: 'POST' });
 
     if (response.ok) {
       alert('Product unhidden');
       loadProducts();
-    } else {
-      alert('Failed to unhide product');
     }
   }
 
-  // ✅ Load Orders
   async function loadOrders() {
     const response = await fetch('/order/all');
     const orders = await response.json();
@@ -308,50 +258,23 @@
 
     orders.forEach(order => {
       const row = `
-      <tr>
-        <td>${order.id}</td>
-        <td>${order.userId}</td>
-        <td>€${order.totalPrice}</td>
-        <td>
-          <select id="status-${order.id}" style="padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
-            <option value="ORDERED" ${order.status === 'ORDERED' ? 'selected' : ''}>Ordered</option>
-            <option value="SHIPPED" ${order.status === 'SHIPPED' ? 'selected' : ''}>Shipped</option>
-            <option value="DELIVERED" ${order.status === 'DELIVERED' ? 'selected' : ''}>Delivered</option>
-            <option value="CANCELED" ${order.status === 'CANCELED' ? 'selected' : ''}>Canceled</option>
-          </select>
-        </td>
-        <td>
-          <button onclick="updateOrder(${order.id})" class="btn btn-update">Update</button>
-        </td>
-      </tr>
+        <tr>
+          <td>${order.id}</td>
+          <td>${order.userId}</td>
+          <td>€${order.totalPrice}</td>
+          <td>${order.status}</td>
+          <td><button onclick="updateOrder(${order.id})" class="btn btn-edit">Update</button></td>
+        </tr>
       `;
       orderTable.insertAdjacentHTML('beforeend', row);
     });
   }
 
-  // ✅ Update Order
-  async function updateOrder(orderId) {
-    const status = document.getElementById(`status-${orderId}`).value;
-
-    const response = await fetch(`/order/update/${orderId}?status=${status}`, {
-      method: 'POST'
-    });
-
-    if (response.ok) {
-      alert('Order status updated');
-      loadOrders();
-    } else {
-      alert('Failed to update order status');
-    }
-  }
-
-  // ✅ Load Data on Page Load
   window.onload = () => {
     loadProducts();
     loadOrders();
   };
 </script>
-
 
 </body>
 </html>

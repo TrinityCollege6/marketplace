@@ -112,7 +112,7 @@ public class ProductController {
     public String getProductDetails(@PathVariable Long id, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/user/login"; // Redirect to login if user is not logged in
+            return "redirect:/user/login";
         }
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);

@@ -7,12 +7,12 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
+      padding: 20px;
+      background-color: white;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 20px auto;
       display: flex;
       flex-wrap: wrap;
@@ -21,74 +21,70 @@
     }
 
     .product {
-      background: white;
-      padding: 15px;
-      width: 280px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
+      background-color: white;
+      padding: 10px;
+      width: 250px;
+      border: 1px solid black;
+      border-radius: 4px;
       text-align: center;
-      transition: transform 0.2s ease-in-out;
     }
 
     .product img {
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-radius: 5px;
-    }
-
-    .product:hover {
-      transform: translateY(-5px);
+      border: 1px solid black;
+      margin-bottom: 10px;
     }
 
     h3 {
       font-size: 18px;
-      margin: 10px 0;
-      color: #333;
+      color: black;
+      margin: 5px 0;
     }
 
     p {
       font-size: 16px;
-      color: #555;
+      color: black;
       margin: 5px 0;
     }
 
     button {
-      background-color: #28a745;
+      background-color: green;
       color: white;
-      padding: 10px;
-      border: none;
+      padding: 8px;
+      border: 1px solid black;
       border-radius: 4px;
       cursor: pointer;
       width: 100%;
-      margin-top: 10px;
-      transition: background 0.2s;
+      font-size: 14px;
+      margin-top: 5px;
     }
 
     button:hover {
-      background-color: #218838;
+      background-color: darkgreen;
     }
 
     .btn {
       display: inline-block;
-      margin-top: 10px;
-      background-color: #007bff;
+      padding: 8px;
+      background-color: blue;
       color: white;
-      padding: 10px;
-      border-radius: 4px;
       text-decoration: none;
-      transition: background 0.2s;
+      border: 1px solid black;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-top: 5px;
     }
 
     .btn:hover {
-      background-color: #0056b3;
+      background-color: darkblue;
     }
 
     .link-container {
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
-      align-items: center;
+      margin-bottom: 20px;
     }
 
     .right-links {
@@ -97,25 +93,25 @@
     }
 
     .cart-link, .order-history-link, .logout-link {
-      background-color: #28a745;
+      background-color: green;
       color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
+      padding: 8px;
+      border: 1px solid black;
       text-decoration: none;
-      font-weight: bold;
-      transition: background 0.2s;
+      font-size: 14px;
+      border-radius: 4px;
     }
 
-    .cart-link:hover, .order-history-link:hover, .logout-link:hover {
-      background-color: #218838;
+    .cart-link:hover, .order-history-link:hover {
+      background-color: darkgreen;
     }
 
     .logout-link {
-      background-color: #dc3545;
+      background-color: red;
     }
 
     .logout-link:hover {
-      background-color: #c82333;
+      background-color: darkred;
     }
   </style>
 </head>
@@ -140,7 +136,7 @@
     <form th:action="@{'/cartItem/add/' + ${product.id}}" method="post">
       <input type="hidden" name="productId" th:value="${product.id}" />
       <label>Quantity:</label>
-      <input type="number" name="quantity" value="1" min="1" />
+      <input type="number" name="quantity" value="1" min="1">
       <button type="submit">Add to Cart</button>
     </form>
 

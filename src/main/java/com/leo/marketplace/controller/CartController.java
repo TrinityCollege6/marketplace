@@ -29,11 +29,6 @@ public class CartController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-//    @PostMapping("/add/{Id}")
-//    public String addProduct(@PathVariable Long Id, @RequestParam int quantity) {
-//        cartService.addProduct(Id, quantity);
-//        return "redirect:/cart";
-//    }
     @PostMapping("/add/{productId}")
     public String addToCart(@PathVariable Long productId, @RequestParam int quantity, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
