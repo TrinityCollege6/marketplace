@@ -97,7 +97,7 @@
 
     select {
       padding: 5px;
-      border: 1px black;
+      border: 1px solid black;
       border-radius: 3px;
     }
 
@@ -262,12 +262,25 @@
           <td>${order.id}</td>
           <td>${order.userId}</td>
           <td>€${order.totalPrice}</td>
-          <td>${order.status}</td>
+          <td>
+            <select id="status-${order.id}">
+              <option value="ORDERED" ${order.status === 'ORDERED' ? 'selected' : ''}>ORDERED</option>
+              <option value="SHIPPED" ${order.status === 'SHIPPED' ? 'selected' : ''}>SHIPPED</option>
+              <option value="DELIVERED" ${order.status === 'DELIVERED' ? 'selected' : ''}>DELIVERED</option>
+              <option value="CANCELED" ${order.status === 'CANCELED' ? 'selected' : ''}>CANCELED</option>
+            </select>
+          </td>
           <td><button onclick="updateOrder(${order.id})" class="btn btn-edit">Update</button></td>
         </tr>
       `;
       orderTable.insertAdjacentHTML('beforeend', row);
     });
+  }
+
+  async function updateOrder(orderId) {
+    const status = document.getElementById(`status-${orderId}`).value;
+    await fetch(`/order/update/${orderId}?status=${status}`, { method: 'POST' });
+    loadOrders();
   }
 
   window.onload = () => {
