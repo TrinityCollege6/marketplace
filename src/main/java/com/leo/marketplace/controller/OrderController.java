@@ -3,14 +3,15 @@ package com.leo.marketplace.controller;
 
 import com.leo.marketplace.model.Order;
 import com.leo.marketplace.model.User;
+import com.leo.marketplace.model.response.OrderResponse;
+import com.leo.marketplace.repository.OrderRepository;
 import com.leo.marketplace.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @PostMapping("/place")
     public String orderPlace(HttpSession session) {
@@ -49,7 +52,34 @@ public class OrderController {
         model.addAttribute("orders", orders);
 
         return "orderHistory";
+    }
 
+    @GetMapping("/all")
+    @ResponseBody
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream().map(order -> new OrderResponse(
+                        order.getId(),
+                        order.getUser().getId(),
+                        order.getTotalPrice(),
+                        order.getStatus()
+                )).toList();
+    }
+
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestParam String status) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
+        try {
+            order.setStatus(Order.OrderStatus.valueOf(status));
+            orderRepository.save(order);
+            return ResponseEntity.ok().body("Order status updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid order status");
+        }
     }
 
 }

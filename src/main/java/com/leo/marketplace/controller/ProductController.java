@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,53 @@ public class ProductController {
         response.put("message", "Product created successfully");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @PostMapping("/update/{id}")
+    @ResponseBody
+    public ResponseEntity<?> updateProduct(
+            @PathVariable Long id,
+            @RequestParam BigDecimal price,
+            @RequestParam int stock) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        product.setPrice(price);
+        product.setQuantity(stock);
+        productRepository.save(product);
+
+        return ResponseEntity.ok().body("Product updated successfully");
+    }
+
+    @PostMapping("/hide/{id}")
+    @ResponseBody
+    public ResponseEntity<?> hideProduct(@PathVariable Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        product.setHidden(true);
+        productRepository.save(product);
+
+        return ResponseEntity.ok().body("Product hidden successfully");
+    }
+
+    @PostMapping("/unhide/{id}")
+    @ResponseBody
+    public ResponseEntity<?> unhideProduct(@PathVariable Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        product.setHidden(false);
+        productRepository.save(product);
+
+        return ResponseEntity.ok().body("Product unhidden successfully");
     }
 
     @GetMapping

@@ -11,24 +11,20 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
-
-    @Column(nullable = false)
     private BigDecimal totalPrice;
-
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private OrderStatus status;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
     public enum OrderStatus {
         ORDERED, SHIPPED, DELIVERED, CANCELED
     }
+
+
 
     public Long getId() {
         return id;
@@ -68,5 +64,9 @@ public class Order {
 
     public void setOrderedItems(List<OrderedItem> orderedItems) {
         this.orderedItems = orderedItems;
+    }
+
+    public String getUserFullName() {
+        return user != null ? user.getFullname() : null;
     }
 }

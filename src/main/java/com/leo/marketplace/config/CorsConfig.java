@@ -17,7 +17,7 @@ public class CorsConfig {
         config.setAllowedOrigins(List.of("http://localhost:63342")); // Allow frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); // Allow cookies/auth
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

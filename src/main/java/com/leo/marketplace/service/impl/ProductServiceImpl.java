@@ -41,14 +41,14 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(request.getPrice());
         product.setDescription(request.getDescription());
         product.setImageUrl(request.getImageUrl());
-        product.setHidden(request.getHidden() != null ? request.getHidden() : false); // Default false if null
+        product.setHidden(request.getHidden() != null ? request.getHidden() : false);
 
         return productRepository.save(product);
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findByIsHiddenFalse();
     }
 
     @Override
