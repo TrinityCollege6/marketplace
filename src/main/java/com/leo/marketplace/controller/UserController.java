@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.leo.marketplace.service.UserService;
@@ -27,7 +28,6 @@ import java.util.Optional;
 
 
 @RequestMapping("/user")
-//@CrossOrigin(origins = "*")
 @Controller
 public class UserController {
 
@@ -39,6 +39,9 @@ public class UserController {
     private ProductRepository productRepository;
     @Autowired
     private OrderRepository orderRepository;
+
+    private static final String SALT = "leo";
+
 
 
     @GetMapping("/register")
@@ -80,11 +83,17 @@ public class UserController {
 
         Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
 
-        if (userOptional.isEmpty() || !userOptional.get().getPassword().equals(loginRequest.getPassword())) {
+        if (userOptional.isEmpty()) {
             return ResponseEntity.status(401).body(Map.of("message", "Invalid username or password"));
         }
 
         User user = userOptional.get();
+
+        String encryptedPassword = DigestUtils.md5DigestAsHex((SALT + loginRequest.getPassword()).getBytes());
+
+        if (!encryptedPassword.equals(user.getPassword())) {
+            return ResponseEntity.status(401).body(Map.of("message", "Invalid username or password"));
+        }
         session.setAttribute("user", user);
 
         String redirectUrl;
@@ -96,7 +105,6 @@ public class UserController {
             redirectUrl = "/user/login";
         }
 
-        // ✅ Send JSON response to frontend
         return ResponseEntity.ok(Map.of(
                 "message", "Login successful",
                 "redirect", redirectUrl

@@ -4,39 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 14px;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .signup-text {
+      font-size: 14px;
+      text-align: center;
+      margin-top: 16px;
+      color: #555;
+    }
+
+    .signup-text a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .signup-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
+<body>
 
-<div class="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+<div class="container">
+  <h2>Login</h2>
 
-  <h2 class="text-2xl font-semibold text-center mb-6">Login</h2>
+  <div id="errorMessage" class="error-message"></div>
 
-  <div id="errorMessage" class="text-sm text-red-500 text-center mb-4 hidden"></div>
-
-  <form id="loginForm" class="space-y-4">
-
+  <form id="loginForm">
     <div>
-      <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-      <input type="text" id="username" name="username" required
-             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required>
     </div>
 
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-      <input type="password" id="password" name="password" required
-             class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
     </div>
 
-    <button type="submit"
-            class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-      Log In
-    </button>
+    <button type="submit">Log In</button>
   </form>
 
-  <p class="text-sm text-center text-gray-600 mt-4">
+  <p class="signup-text">
     Don't have an account?
-    <a th:href="@{/user/register}" class="text-blue-500 hover:text-blue-700">Sign up</a>
+    <a th:href="@{/user/register}">Sign up</a>
   </p>
 </div>
 
@@ -59,17 +143,16 @@
       const result = await response.json();
 
       if (response.ok) {
-        // alert(result.message);
         localStorage.setItem("user", JSON.stringify(result));
         window.location.href = result.redirect;
       } else {
         document.getElementById("errorMessage").textContent = result.message;
-        document.getElementById("errorMessage").classList.remove("hidden");
+        document.getElementById("errorMessage").style.display = "block";
       }
     } catch (error) {
       console.error("Login Error:", error);
       document.getElementById("errorMessage").textContent = "An error occurred. Please try again.";
-      document.getElementById("errorMessage").classList.remove("hidden");
+      document.getElementById("errorMessage").style.display = "block";
     }
   });
 </script>

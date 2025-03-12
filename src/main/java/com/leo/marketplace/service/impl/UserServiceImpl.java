@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.core.convert.QueryMapper;
 import org.springframework.stereotype.Service;
 import com.leo.marketplace.model.request.UserRegisterRequest;
+import org.springframework.util.DigestUtils;
 
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final String SALT = "leo";
     @Override
     public long userRegister(String username, String fullname, String email, String password, String checkPassword) {
         if (StringUtils.isAnyBlank(username, fullname, email, password, checkPassword)) {
@@ -53,9 +55,11 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "Email is already in use");
         }
 
+        String encryptedPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
+
         User newUser = new User();
         newUser.setUsername(username);
-        newUser.setPassword(password);
+        newUser.setPassword(encryptedPassword);
         newUser.setFullname(fullname);
         newUser.setEmail(email);
         newUser.setRole(CUSTOMER);
