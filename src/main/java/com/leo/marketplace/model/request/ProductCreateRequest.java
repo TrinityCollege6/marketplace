@@ -8,6 +8,16 @@ public class ProductCreateRequest {
     private String description;
     private String imageUrl;
     private Boolean isHidden;
+    private int quantity;
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public String getName() {
         return name;

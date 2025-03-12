@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 //@CrossOrigin(origins = "*")
 @Controller
@@ -27,6 +28,12 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ProductRepository productRepository;
+
+    @GetMapping("/all")
+    @ResponseBody
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> productCreate(@RequestBody ProductCreateRequest request) {
@@ -39,28 +46,31 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
-    @ResponseBody
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-
     @PostMapping("/update/{id}")
-    @ResponseBody
     public ResponseEntity<?> updateProduct(
             @PathVariable Long id,
-            @RequestParam BigDecimal price,
-            @RequestParam int stock) {
+            @RequestBody Map<String, Object> updates) {
 
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        product.setPrice(price);
-        product.setQuantity(stock);
-        productRepository.save(product);
+        if (updates.containsKey("price")) {
+            product.setPrice(new BigDecimal(updates.get("price").toString()));
+        }
+        if (updates.containsKey("quantity")) {
+            product.setQuantity((Integer) updates.get("quantity"));
+        }
+        if (updates.containsKey("description")) {
+            product.setDescription((String) updates.get("description"));
+        }
+        if (updates.containsKey("imageUrl")) {
+            product.setImageUrl((String) updates.get("imageUrl"));
+        }
 
+        productRepository.save(product);
         return ResponseEntity.ok().body("Product updated successfully");
     }
+
 
     @PostMapping("/hide/{id}")
     @ResponseBody
